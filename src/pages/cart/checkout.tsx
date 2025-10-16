@@ -145,19 +145,19 @@ const CheckoutPage = () => {
                 <ul className="round-options round-options--two">
                   <li className="round-item round-item--bg">
                     <img src="/images/logos/inpost.svg" alt="Paypal" />
-                    <p>$20.00</p>
+                    <p>$2.00</p>
                   </li>
                   <li className="round-item round-item--bg">
                     <img src="/images/logos/dpd.svg" alt="Paypal" />
-                    <p>$12.00</p>
+                    <p>$1.00</p>
                   </li>
                   <li className="round-item round-item--bg">
                     <img src="/images/logos/dhl.svg" alt="Paypal" />
-                    <p>$15.00</p>
+                    <p>$1.00</p>
                   </li>
                   <li className="round-item round-item--bg">
                     <img src="/images/logos/maestro.png" alt="Paypal" />
-                    <p>$10.00</p>
+                    <p>$1.00</p>
                   </li>
                 </ul>
               </div>
