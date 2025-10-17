@@ -6,7 +6,7 @@ type ProductType = {
   id: string;
   name: string;
   thumb: string;
-  price: string;
+  price: number;
   count: number;
   color: string;
   size: string;
