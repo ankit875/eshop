@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
 import type { RootState } from "@/store";
@@ -16,6 +17,25 @@ const ShoppingCart = () => {
     }
 
     return totalPrice;
+  };
+
+  const router = useRouter();
+
+  const handleCheckout = async () => {
+    // create a payment session on server then redirect to checkout with sessionId
+    try {
+      const resp = await fetch("/api/payments/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: priceTotal() }),
+      });
+      if (!resp.ok) throw new Error("failed to create session");
+      const { sessionId } = await resp.json();
+      router.push(`/cart/checkout?sessionId=${encodeURIComponent(sessionId)}`);
+    } catch (err) {
+      console.error(err);
+      router.push("/cart/checkout");
+    }
   };
 
   return (
@@ -72,12 +92,12 @@ const ShoppingCart = () => {
             <p className="cart-actions__total">
               Total cost <strong>${priceTotal().toFixed(2)}</strong>
             </p>
-            <Link
-              href="/cart/checkout"
+            <button
+              onClick={handleCheckout}
               className="btn btn--rounded btn--yellow"
             >
               Checkout
-            </Link>
+            </button>
           </div>
         </div>
       </div>
