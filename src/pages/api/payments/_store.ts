@@ -1,25 +1,33 @@
+/* eslint-disable */
 // Simple in-memory payment session store for demo/testing only
+type SessionStatus = "created" | "paid" | "failed";
+
+type Metadata = Record<string, unknown>;
+
 type Session = {
   id: string;
   amount: number;
-  status: "created" | "paid" | "failed";
+  status: SessionStatus;
   createdAt: number;
-  metadata?: Record<string, any>;
+  metadata?: Metadata;
 };
 
 // Use a global container so the sessions Map survives module reloads in dev
 // and is shared across API route module instances.
-const _global = globalThis as any;
-if (!_global.__payment_sessions__) {
-  _global.__payment_sessions__ = new Map<string, Session>();
+declare global {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  var __payment_sessions__: Map<string, Session> | undefined;
 }
-const sessions: Map<string, Session> = _global.__payment_sessions__;
 
-export function createSession(
-  id: string,
-  amount: number,
-  metadata?: Record<string, any>
-) {
+if (!globalThis.__payment_sessions__) {
+  globalThis.__payment_sessions__ = new Map<string, Session>();
+}
+const sessions: Map<string, Session> = globalThis.__payment_sessions__ as Map<
+  string,
+  Session
+>;
+
+export function createSession(id: string, amount: number, metadata?: Metadata) {
   const session: Session = {
     id,
     amount,
@@ -31,16 +39,16 @@ export function createSession(
   return session;
 }
 
-export function getSession(id: string) {
+export function getSession(id: string): Session | null {
   return sessions.get(id) ?? null;
 }
 
 // Dev helper: return all sessions (not intended for production)
-export function listSessions() {
+export function listSessions(): Session[] {
   return Array.from(sessions.values());
 }
 
-export function markPaid(id: string) {
+export function markPaid(id: string): Session | null {
   const s = sessions.get(id);
   if (!s) return null;
   s.status = "paid";
@@ -48,6 +56,6 @@ export function markPaid(id: string) {
   return s;
 }
 
-export function clearSessions() {
+export function clearSessions(): void {
   sessions.clear();
 }

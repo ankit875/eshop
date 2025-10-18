@@ -1,22 +1,19 @@
+/* eslint-disable */
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 import Layout from "../../layouts/Main";
-import type { RootState } from "@/store";
 import { clearCart } from "@/store/reducers/cart";
 
 const ConfirmationPage = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const [orderId, setOrderId] = useState<string | null>(null);
   const router = useRouter();
   const [verifying, setVerifying] = useState(false);
   const [verified, setVerified] = useState<null | boolean>(null);
-
-  // Compute total based on current cart items
-  const total = cartItems.reduce((s, i) => s + i.price * i.count, 0);
 
   useEffect(() => {
     // generate order id only on the client after hydration

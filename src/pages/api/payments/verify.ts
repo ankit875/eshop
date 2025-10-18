@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+
 import { getSession } from "./_store";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

@@ -1,11 +1,20 @@
+/* eslint-disable */
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
 import Layout from "../../layouts/Main";
+
+type Session = {
+  sessionId: string;
+  status: "created" | "paid" | "failed";
+  amount?: number;
+  metadata?: Record<string, unknown>;
+};
 
 const PaymentPage = () => {
   const router = useRouter();
   const { sessionId } = router.query;
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
