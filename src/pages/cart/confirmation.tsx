@@ -5,11 +5,12 @@ import { useRouter } from "next/router";
 
 import Layout from "../../layouts/Main";
 import type { RootState } from "@/store";
+import { clearCart } from "@/store/reducers/cart";
 
 const ConfirmationPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
-  const [orderId] = useState(() => `ORD-${Date.now().toString().slice(-6)}`);
+  const [orderId, setOrderId] = useState<string | null>(null);
   const router = useRouter();
   const [verifying, setVerifying] = useState(false);
   const [verified, setVerified] = useState<null | boolean>(null);
@@ -18,6 +19,9 @@ const ConfirmationPage = () => {
   const total = cartItems.reduce((s, i) => s + i.price * i.count, 0);
 
   useEffect(() => {
+    // generate order id only on the client after hydration
+    setOrderId(`ORD-${Date.now().toString().slice(-6)}`);
+
     const verify = async () => {
       const { sessionId } = router.query ?? {};
 
@@ -36,7 +40,7 @@ const ConfirmationPage = () => {
           if (data.status === "paid") {
             setVerified(true);
             // clear cart when payment is confirmed
-            dispatch({ type: "cart/clearCart" });
+            dispatch(clearCart());
           } else {
             setVerified(false);
           }
@@ -71,25 +75,6 @@ const ConfirmationPage = () => {
             <p>
               Your order id: <strong>{orderId}</strong>
             </p>
-
-            <div className="order-summary">
-              <h4>Order summary</h4>
-              {cartItems.length === 0 && <p>No items (cart cleared)</p>}
-
-              {cartItems.length > 0 && (
-                <ul>
-                  {cartItems.map((item) => (
-                    <li key={item.id}>
-                      {item.name} <span> x{item.count}</span> - ${item.price}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <p>
-                Total: <strong>${total.toFixed(2)}</strong>
-              </p>
-            </div>
 
             <div className="order-actions">
               <Link href="/products" className="btn btn--rounded btn--yellow">

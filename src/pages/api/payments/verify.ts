@@ -11,12 +11,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = getSession(sessionId);
   if (!session) return res.status(404).json({ error: "session not found" });
 
-  res
-    .status(200)
-    .json({
-      sessionId: session.id,
-      status: session.status,
-      amount: session.amount,
-      metadata: session.metadata ?? {},
-    });
+  res.status(200).json({
+    sessionId: session.id,
+    status: session.status,
+    amount: session.amount,
+    metadata: session.metadata ?? {},
+  });
 }

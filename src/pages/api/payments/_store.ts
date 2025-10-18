@@ -7,7 +7,13 @@ type Session = {
   metadata?: Record<string, any>;
 };
 
-const sessions = new Map<string, Session>();
+// Use a global container so the sessions Map survives module reloads in dev
+// and is shared across API route module instances.
+const _global = globalThis as any;
+if (!_global.__payment_sessions__) {
+  _global.__payment_sessions__ = new Map<string, Session>();
+}
+const sessions: Map<string, Session> = _global.__payment_sessions__;
 
 export function createSession(
   id: string,
@@ -27,6 +33,11 @@ export function createSession(
 
 export function getSession(id: string) {
   return sessions.get(id) ?? null;
+}
+
+// Dev helper: return all sessions (not intended for production)
+export function listSessions() {
+  return Array.from(sessions.values());
 }
 
 export function markPaid(id: string) {

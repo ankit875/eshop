@@ -156,6 +156,74 @@ h1,h2,h3,h4,h5 {
   }
 }
 
+/* Order confirmation styles */
+.order-confirmation {
+  background: #FFF;
+  border: 1px solid #F0F0F0;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(28, 30, 34, 0.04);
+  margin-bottom: 20px;
+
+  p {
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--color-text);
+  }
+
+  strong {
+    color: var(--color-black);
+  }
+
+  .order-summary {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #F3F3F3;
+
+    h4 {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px 0;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px dashed #F4F4F4;
+        font-size: 13px;
+
+        span {
+          color: #7a7a7a;
+          margin-left: 8px;
+        }
+      }
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+
+  .order-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+
+    a.btn {
+      flex: 1;
+      text-align: center;
+      display: inline-block;
+    }
+  }
+}
+
 .btn-hamburger {
   display: block;
   position: relative;

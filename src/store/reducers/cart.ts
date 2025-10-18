@@ -54,8 +54,13 @@ const cartSlice = createSlice({
       const indexItem = indexSameProduct(state, action.payload.product);
       state.cartItems[indexItem].count = action.payload.count;
     },
+    // clear the cart items (useful after order confirmation)
+    clearCart(state) {
+      state.cartItems = [];
+    },
   },
 });
 
-export const { addProduct, removeProduct, setCount } = cartSlice.actions;
+export const { addProduct, removeProduct, setCount, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;
